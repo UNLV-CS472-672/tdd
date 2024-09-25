@@ -60,3 +60,9 @@ class TestCounterEndPoints:
         # Verify the counter is deleted
         result = client.get('/counters/goo_delete')
         assert result.status_code == status.HTTP_404_NOT_FOUND
+    
+    def test_delete_non_existent_counter(self, client):
+        """It should return 404 when trying to delete a non-existent counter"""
+        result = client.delete('/counters/non_existent_counter')
+        assert result.status_code == status.HTTP_404_NOT_FOUND
+
