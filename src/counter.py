@@ -6,6 +6,7 @@ app = Flask(__name__)
 # Dictionary to hold counters
 COUNTERS = {}
 
+
 @app.route('/counters/<name>', methods=['POST'])
 def create_counter(name):
     """Creating the counter"""
@@ -34,6 +35,7 @@ def read_counter(name):
     if name not in COUNTERS:
         return {"Message": f"Counter {name} does not exist"}, status.HTTP_404_NOT_FOUND
     return {name: COUNTERS[name]}, status.HTTP_200_OK
+
 
 @app.route('/counters/<name>', methods=['DELETE'])
 def delete_counter(name):
