@@ -43,10 +43,13 @@ pip install -r requirements.txt
 ```
 
 ### 4. Set Flask Environment Variable
+- macOS/Linux
 ```bash
-   python3 -m venv venv
-  source venv/bin/activate  # macOS/Linux
-  venv\Scripts\activate     # Windows
+   export FLASK_APP=src
+```
+- Windows
+```bash
+    set FLASK_APP=src
 ```
 ### 5. Run Flask Locally to Ensure API Works
 ```bash
