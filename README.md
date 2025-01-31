@@ -11,6 +11,7 @@ This lab focuses on **Test-Driven Development (TDD)**—writing test cases first
 
 The repository is organized as follows:
 
+```markdown
 tdd_lab/
 ├── 📂 tests/                   # Contains all test cases
 │   ├── 📄 test_counter.py       # Test cases for the counter API (each student contributes a test)
@@ -21,6 +22,7 @@ tdd_lab/
 ├── 📄 requirements.txt          # Dependencies for the project
 ├── 📄 pytest.ini                # Pytest configuration
 ├── 📄 README.md                 # Project documentation
+```
 
 ### Python Version (s)
 To be able to following the lab, you need at least python `>= 3.8`. The exercise has been testing with the following Python versions: `3.8.1`, `3.9.5`, `3.9.6`, `3.9.7` and `3.10.10` but any version of python `3.8+` work without any configuration issues. **If you are facing any configuration issues, please reach out to the T.A**. 
