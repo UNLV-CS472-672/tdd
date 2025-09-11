@@ -9,4 +9,31 @@ how to call the web service and assert what it should return.
 - Duplicate names must return a conflict error code.
 - The service must be able to update a counter by name.
 - The service must be able to read the counter
+Counter API Implementation
 """
+
+import pytest
+from src import app
+from src import status
+
+@pytest.fixture()
+def client():
+    """Fixture for Flask test client"""
+    return app.test_client()
+
+@pytest.mark.usefixtures("client")
+class TestCounterEndpoints:
+    """Test cases for Counter API"""
+    def test_create_counter(self, client):
+        """It should create a counter"""
+        result = client.post('/counters/foo')
+        assert result.status_code == status.HTTP_201_CREATED
+        
+        
+            
+    def nonexistent_counter_returns_404(client):
+        # GET /counters/<name> should return 404 if counter does not exist
+        response = client.get("/counters/doesnotexist")
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+        assert response.json == {"error": "Counter doesnotexist not found"}
+
