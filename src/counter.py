@@ -21,9 +21,9 @@ def create_counter(name):
     COUNTERS[name] = 0
     return jsonify({name: COUNTERS[name]}), status.HTTP_201_CREATED
 
-@app.route('/counters/<name>', methods=['GET'])
-def get_counter(name):
-    """Get the value of an existing counter"""
-    if not counter_exists(name):
-        return jsonify({"error": f"Counter {name} not found"}), status.HTTP_404_NOT_FOUND
-    return jsonify({name: COUNTERS[name]}), status.HTTP_200_OK
+# @app.route('/counters/<name>', methods=['GET'])
+# def get_counter(name):
+#     """Get the value of an existing counter"""
+#     if not counter_exists(name):
+#         return jsonify({"error": f"Counter {name} not found"}), status.HTTP_404_NOT_FOUND
+#     return jsonify({name: COUNTERS[name]}), status.HTTP_200_OK

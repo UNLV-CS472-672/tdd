@@ -30,10 +30,28 @@ class TestCounterEndpoints:
         assert result.status_code == status.HTTP_201_CREATED
         
         
+    def test_get_nonexistent_counter_returns_404(self, client):
+        """It should return 404 when getting a counter that does not exist"""
+        result = client.get('/counters/doesnotexist')
+        assert result.status_code == status.HTTP_404_NOT_FOUND
+
+        
+    # def test_counter_exists_helper(self):
+    #     """It should return True if counter exists, False otherwise"""
+    #     from src import COUNTERS, counter_exists
+
+    #     # Make sure dict is clean
+    #     COUNTERS.clear()
+
+    #     assert counter_exists("foo") is False  # not created yet
+
+    #     COUNTERS["foo"] = 0
+    #     assert counter_exists("foo") is True   # now it exists
+
             
-    def nonexistent_counter_returns_404(client):
-        # GET /counters/<name> should return 404 if counter does not exist
-        response = client.get("/counters/doesnotexist")
-        assert response.status_code == status.HTTP_404_NOT_FOUND
-        assert response.json == {"error": "Counter doesnotexist not found"}
+    # def nonexistent_counter_returns_404(self, client):
+    #     # GET /counters/<name> should return 404 if counter does not exist
+    #     response = client.get("/counters/doesnotexist")
+    #     assert response.status_code == status.HTTP_404_NOT_FOUND
+    #     assert response.json == {"error": "Counter doesnotexist not found"}
 
