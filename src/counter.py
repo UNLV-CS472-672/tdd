@@ -25,5 +25,9 @@ def create_counter(name):
 def get_counter(name):
     """Get the value of an existing counter"""
     if not counter_exists(name):
-        return jsonify({"error": f"Counter {name} not found"}), status.HTTP_404_NOT_FOUND
+        return not_found_response(name)
     return jsonify({name: COUNTERS[name]}), status.HTTP_200_OK
+
+def not_found_response(name):
+    return jsonify({"error": f"Counter {name} not found"}), status.HTTP_404_NOT_FOUND
+
