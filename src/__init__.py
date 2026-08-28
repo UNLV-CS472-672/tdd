@@ -1,7 +1,11 @@
-import pytest
+"""
+Counter API package.
 
-# we need to import the unit under test - counter
-from src.counter import app 
+Re-exports the Flask app and the HTTP status codes so tests can use:
+    from src import app
+    from src import status
+"""
+from src.counter import app
+from src import status
 
-# we need to import the file that contains the status codes
-from src import status 
+__all__ = ["app", "status"]
