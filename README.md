@@ -11,19 +11,22 @@ The repository is organized as follows:
 
 ```markdown
 tdd_lab/
-├── 📂 tests/                   # Contains all test cases
+├── 📂 tests/                    # Contains all test cases
+│   ├── 📄 __init__.py           # Marks tests as a package
 │   ├── 📄 test_counter.py       # Test cases for the counter API (each student contributes a test)
 ├── 📂 src/                      # Source code for the counter service
-│   ├── 📄 __init__.py           # Flask app initialization
-│   ├── 📄 counter.py            # Counter API implementation
+│   ├── 📄 __init__.py           # Re-exports the Flask app and status codes
+│   ├── 📄 counter.py            # Counter API implementation (starts out empty)
 │   ├── 📄 status.py             # HTTP status codes
+├── 📂 doc/                      # Supporting documentation
+│   ├── 📄 mergeconflicts.md     # How to resolve conflicts in counter.py
 ├── 📄 requirements.txt          # Dependencies for the project
 ├── 📄 pytest.ini                # Pytest configuration
 ├── 📄 README.md                 # Project documentation
 ```
 
 ### Python Version(s)
-To follow this lab, you need Python **version 3.8 or later**. The exercises have been tested with the following versions: `3.8.1`, `3.9.5`, `3.9.6`, `3.9.7`, and `3.10.10`. However, any Python version **3.8+** should work without configuration issues.  
+To follow this lab, you need Python **version 3.9 or later**. The exercises have been tested on `3.9.6` and `3.13.5`, and any Python **3.9+** should work without configuration issues. Python 3.8 reached end of life in October 2024 and is no longer supported by the pinned dependencies.  
 
 If you encounter any setup or configuration problems, please reach out to the **T.A.** for assistance.
 
@@ -52,30 +55,47 @@ pip install -r requirements.txt
 ```bash
     set FLASK_APP=src
 ```
-### 5. Run Flask Locally to Ensure API Works
+### 5. Run Flask Locally to Check Your Setup
 ```bash
 flask run
 ```
 
-✅ Visit http://127.0.0.1:5000/counters/foo in the browser. If it returns {"error": "Counter not found"}, your API is working!
+Flask should start and report that it is serving on `http://127.0.0.1:5000`. A clean startup with no import errors is all you are checking here. Stop the server with `Ctrl+C`.
 
-### 6. Merge Conflicts
+> ⚠️ **The starter app has no routes yet.** `src/counter.py` contains only a bare Flask app, so *every* URL — including `http://127.0.0.1:5000/counters/foo` — returns a generic **404 Not Found** page. That is the expected starting point: you add the endpoints yourself during the RED/GREEN cycle.
+
+### 6. Verify the Test Setup
+```bash
+pytest --cov=src
+```
+
+`tests/test_counter.py` contains only a docstring at this point, so you should see a coverage table followed by:
+
+```
+============================ no tests ran in 0.02s =============================
+```
+
+pytest exits with **code 5** (`no tests collected`), and coverage prints `CoverageWarning: No data was collected`. Both are expected while the test file is still empty — neither is a setup failure.
+
+### 7. Merge Conflicts
 If you are having trouble merging changes to the main branch of the team's repo, you can take a look at this doc: [How to Handle Merge Conflicts in the Testing Lab](doc/mergeconflicts.md).
 
 
-### 7. 🛠️ Troubleshooting Guide
+### 8. 🛠️ Troubleshooting Guide
 
 Below are common errors students may encounter and their solutions:
 
 | **Error** | **Cause** | **Solution** |
 |-----------|----------|-------------|
-| `ImportError: cannot import name 'app' from 'src'` | Flask app is not detected | Run `export FLASK_APP=src` before running `flask run` |
-| `Error: No such command 'db'` | Flask-Migrate missing | Run `pip install flask-migrate` |
-| `sqlalchemy.exc.OperationalError: table account has no column named balance` | Database not migrated | Run `flask db upgrade` |
-| `ModuleNotFoundError: No module named 'src'` | Missing dependencies | Run `pip install -r requirements.txt` |
+| `ModuleNotFoundError: No module named 'src'` | Running from the wrong directory. `src/` must be in your current directory | `cd` into `tdd_lab/` before running `pytest` or `flask run` |
+| `Error: Could not import 'src'.` | `flask run` started outside the lab folder, or `FLASK_APP` is unset | `cd` into `tdd_lab/`, then `export FLASK_APP=src` (macOS/Linux) or `set FLASK_APP=src` (Windows) |
+| `ImportError: cannot import name 'app' from 'src'` | `src/counter.py` no longer defines `app` | Confirm `src/counter.py` still contains `app = Flask(__name__)` |
+| `AttributeError: module 'src.status' has no attribute 'HTTP_400_BAD_REQUEST'` | `src/status.py` does not define a 400 constant | Add `HTTP_400_BAD_REQUEST = 400` to `src/status.py`, or use `from http import HTTPStatus`. Coordinate with your team — this file is shared |
+| `404 Not Found` for every `/counters/...` URL | Expected before the endpoints exist | Not an error. Add the route during your GREEN phase |
+| `no tests ran` / exit code `5` | `tests/test_counter.py` has no test functions yet | Expected before you write your first test |
 
 If you continue to experience issues, follow these steps:
-1. **Check that Flask is running** with `flask run`.
+1. **Confirm you are in the `tdd_lab/` directory** — most import errors are a wrong-directory problem.
 2. **Ensure all dependencies are installed** with `pip install -r requirements.txt`.
 3. **Consult your team first before reaching out for help**.
 4. **If the issue persists, open a GitHub Issue in your team repository**, including:
